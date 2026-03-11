@@ -10,20 +10,8 @@ import {
     CheckCircle2, XCircle, Star, PlusCircle, Trash2, LogOut
 } from "lucide-react";
 
-// ─── Toast Component ───────────────────────────────────────────────────────────
-type ToastType = 'success' | 'error';
-interface ToastState { message: string; type: ToastType; visible: boolean; }
-
-function Toast({ toast }: { toast: ToastState }) {
-    if (!toast.visible) return null;
-    const isSuccess = toast.type === 'success';
-    return (
-        <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl font-medium tracking-wide text-sm transition-all duration-500 animate-in slide-in-from-top-4 fade-in ${isSuccess ? 'bg-indigo-950/90 text-rose-400 border border-rose-500/30 backdrop-blur-xl' : 'bg-red-950/90 text-red-200 border border-red-500/30 backdrop-blur-xl'}`}>
-            {isSuccess ? <CheckCircle2 size={20} /> : <XCircle size={20} />}
-            {toast.message}
-        </div>
-    );
-}
+import { Toast, useToast } from "@/components/ui/Toast";
+import { FloatingInput } from "@/components/ui/FloatingInput";
 
 // ─── Loading Skeleton ──────────────────────────────────────────────────────────
 function SkeletonProfile() {
@@ -38,36 +26,6 @@ function SkeletonProfile() {
                 <div className="h-4 w-32 rounded-full bg-white/10 ml-2" />
                 <div className="h-[300px] rounded-[2.5rem] glass-panel bg-white/5" />
             </div>
-        </div>
-    );
-}
-
-// ─── Modern Floating Input Component ───────────────────────────────────────────
-function FloatingInput({
-    label, name, value, onChange, type = "text", icon, placeholder, className = ""
-}: {
-    label: string, name: string, value: string, onChange: any, type?: string, icon?: React.ReactNode, placeholder?: string, className?: string
-}) {
-    return (
-        <div className={`relative group ${className}`}>
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-rose-500 transition-colors duration-500">
-                {icon}
-            </div>
-            <input
-                type={type}
-                name={name}
-                id={name}
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder || " "}
-                className={`peer w-full h-14 rounded-2xl glass-panel text-white placeholder:text-slate-600 focus:border-rose-500/50 focus:ring-1 focus:ring-rose-500/30 focus:bg-white/10 transition-all duration-500 outline-none pt-4 pb-1 ${icon ? 'pl-11' : 'pl-4'} pr-4 font-light text-sm`}
-            />
-            <label
-                htmlFor={name}
-                className={`absolute text-xs tracking-wider text-slate-400 duration-500 transform -translate-y-3 scale-75 top-3 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-rose-500 ${icon ? 'left-11' : 'left-4'}`}
-            >
-                {label}
-            </label>
         </div>
     );
 }
@@ -154,7 +112,7 @@ export default function ProfileDashboard() {
     const [sessionUserId, setSessionUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [toast, setToast] = useState<ToastState>({ message: '', type: 'success', visible: false });
+    const { toast, showToast } = useToast();
 
     // Ensure all strings are non-undefined for controlled inputs
     const [form, setForm] = useState({
@@ -173,11 +131,6 @@ export default function ProfileDashboard() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-    const showToast = (message: string, type: ToastType = 'success') => {
-        setToast({ message, type, visible: true });
-        setTimeout(() => setToast(prev => ({ ...prev, visible: false })), 4000);
-    };
 
     useEffect(() => {
         fetchData();
@@ -276,17 +229,8 @@ export default function ProfileDashboard() {
             let finalAvatarUrl = form.avatar_url;
             if (selectedFile) finalAvatarUrl = await uploadImage(selectedFile);
 
-            // Construct JSONB details
-            const dynamicDetails: Record<string, string> = {};
-            customDetails.forEach(d => {
-                const k = d.key.trim();
-                const v = d.value.trim();
-                if (k && v) dynamicDetails[k] = v;
-            });
-
             const updatedPreferences = {
-                ...preferences,
-                details: dynamicDetails
+                ...preferences
             };
 
             // Upsert Profile
@@ -443,61 +387,6 @@ export default function ProfileDashboard() {
                         checked={preferences.showMemories ?? true}
                         onChange={() => setPreferences(prev => ({ ...prev, showMemories: !prev.showMemories }))}
                     />
-                </div>
-            </section>
-
-            {/* ── DYNAMIC Ekstra Bilgiler ── */}
-            <section className="space-y-4">
-                <div className="flex items-center justify-between pl-2">
-                    <div className="flex items-center gap-2">
-                        <Star size={16} className="text-gold" />
-                        <h3 className="text-xs font-medium text-slate-400 uppercase tracking-widest">İlişki Detayları</h3>
-                    </div>
-                </div>
-
-                <div className="glass-panel bg-white/5 rounded-[2rem] p-4 space-y-2">
-                    {customDetails.length === 0 ? (
-                        <div className="text-center py-6 border border-dashed border-white/10 rounded-2xl opacity-70">
-                            <h4 className="text-sm font-medium text-slate-300 mb-1 tracking-wide">Henüz özel detay eklenmedi ✨</h4>
-                            <p className="text-xs text-slate-500 font-light max-w-[200px] mx-auto">İlk buluşma mekanınız, birbirinize taktığınız isimler gibi detaylar ekleyin.</p>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col gap-3">
-                            {customDetails.map((detail) => (
-                                <div key={detail.id} className="flex items-center gap-3 w-full group">
-                                    <div className="flex-1 grid grid-cols-2 gap-3">
-                                        <FloatingInput
-                                            label="Başlık (Örn: İlk Şarkımız 🎵)"
-                                            name={`key-${detail.id}`}
-                                            value={detail.key}
-                                            onChange={(e: any) => updateCustomDetail(detail.id, 'key', e.target.value)}
-                                        />
-                                        <FloatingInput
-                                            label="Değer"
-                                            name={`val-${detail.id}`}
-                                            value={detail.value}
-                                            onChange={(e: any) => updateCustomDetail(detail.id, 'value', e.target.value)}
-                                        />
-                                    </div>
-                                    <button
-                                        onClick={() => removeCustomDetail(detail.id)}
-                                        className="h-14 w-14 flex items-center justify-center shrink-0 rounded-2xl glass-panel bg-white/5 text-slate-500 hover:text-red-400 hover:border-red-400/30 hover:bg-red-400/10 transition-all duration-300"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    <div className="pt-1 flex justify-center w-full">
-                        <Button
-                            onClick={addCustomDetail}
-                            className="bg-white/5 border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/10 text-gold rounded-full px-6 transition-all duration-500 font-light flex items-center gap-2 text-sm h-12"
-                        >
-                            <PlusCircle size={16} /> Yeni Detay Ekle
-                        </Button>
-                    </div>
                 </div>
             </section>
 

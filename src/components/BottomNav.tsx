@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Calendar, Image as ImageIcon, User, Settings } from 'lucide-react';
+import { Home, Calendar, Image as ImageIcon, User, Settings, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
     { href: '/', icon: Home, label: 'Ana Sayfa' },
+    { href: '/partner', icon: Heart, label: 'Partner' },
     { href: '/etkinlikler', icon: Calendar, label: 'Etkinlikler' },
     { href: '/anilar', icon: ImageIcon, label: 'Anılar' },
     { href: '/profil', icon: User, label: 'Profil' },
-    { href: '/ayarlar', icon: Settings, label: 'Ayarlar' },
 ];
 
 export function BottomNav() {
@@ -28,7 +28,7 @@ export function BottomNav() {
                                 href={item.href}
                                 className={cn(
                                     "flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-500",
-                                    isActive ? "text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.5)] scale-110 -translate-y-1" : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
+                                    isActive ? "text-[#f1d7b3] drop-shadow-[0_0_12px_rgba(241,215,179,0.7)] scale-110 -translate-y-1" : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
                                 )}
                             >
                                 <Icon size={24} strokeWidth={isActive ? 2 : 1.5} />
