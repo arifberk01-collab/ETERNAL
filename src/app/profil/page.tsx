@@ -285,12 +285,12 @@ export default function ProfileDashboard() {
 
             // Upsert Profile
             const { error: pError } = await supabase.from('profile').upsert({
-                id: sessionUserId, ...form, avatar_url: finalAvatarUrl || null, preferences: updatedPreferences
+                id: sessionUserId, user_id: sessionUserId, ...form, avatar_url: finalAvatarUrl || null, preferences: updatedPreferences
             }, { onConflict: 'id' });
 
             // Upsert Config
             const { error: cError } = await supabase.from('config').upsert({
-                id: sessionUserId, relationshipStartDate: anniversaryDate || null
+                id: sessionUserId, user_id: sessionUserId, relationshipStartDate: anniversaryDate || null
             }, { onConflict: 'id' });
 
             if (pError || cError) throw new Error(pError?.message || cError?.message);

@@ -45,7 +45,7 @@ export default function SettingsPage() {
         const relationshipStartDate = e.target.value;
         const { error } = await supabase
             .from('config')
-            .upsert({ id: sessionUserId, relationshipStartDate }, { onConflict: 'id' });
+            .upsert({ id: sessionUserId, user_id: sessionUserId, relationshipStartDate }, { onConflict: 'id' });
 
         if (!error) {
             setConfig(prev => prev ? { ...prev, relationshipStartDate } : { relationshipStartDate });
