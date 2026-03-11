@@ -265,6 +265,14 @@ export default function ProfileDashboard() {
     const handleSave = async () => {
         setSaving(true);
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                console.error('Kullanıcı bulunamadı!');
+                showToast("Oturum bulunamadı, lütfen tekrar giriş yapın.", 'error');
+                setSaving(false);
+                return;
+            }
+
             let finalAvatarUrl = form.avatar_url;
             if (selectedFile) finalAvatarUrl = await uploadImage(selectedFile);
 
@@ -281,16 +289,14 @@ export default function ProfileDashboard() {
                 details: dynamicDetails
             };
 
-            if (!sessionUserId) throw new Error("Oturum bulunamadı");
-
             // Upsert Profile
             const { error: pError } = await supabase.from('profile').upsert({
-                id: sessionUserId, user_id: sessionUserId, ...form, avatar_url: finalAvatarUrl || null, preferences: updatedPreferences
+                id: user.id, user_id: user.id, ...form, avatar_url: finalAvatarUrl || null, preferences: updatedPreferences
             }, { onConflict: 'id' });
 
             // Upsert Config
             const { error: cError } = await supabase.from('config').upsert({
-                id: sessionUserId, user_id: sessionUserId, relationshipStartDate: anniversaryDate || null
+                id: user.id, user_id: user.id, relationshipStartDate: anniversaryDate || null
             }, { onConflict: 'id' });
 
             if (pError || cError) throw new Error(pError?.message || cError?.message);

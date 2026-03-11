@@ -41,11 +41,17 @@ export default function SettingsPage() {
     }
 
     const handleDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!sessionUserId) return;
         const relationshipStartDate = e.target.value;
+
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            console.error('Kullanıcı bulunamadı!');
+            return;
+        }
+
         const { error } = await supabase
             .from('config')
-            .upsert({ id: sessionUserId, user_id: sessionUserId, relationshipStartDate }, { onConflict: 'id' });
+            .upsert({ id: user.id, user_id: user.id, relationshipStartDate }, { onConflict: 'id' });
 
         if (!error) {
             setConfig(prev => prev ? { ...prev, relationshipStartDate } : { relationshipStartDate });
@@ -53,10 +59,15 @@ export default function SettingsPage() {
     };
 
     const handleWipeData = async () => {
-        if (!sessionUserId) return;
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            console.error('Kullanıcı bulunamadı!');
+            return;
+        }
+
         if (confirm("TÜM VERİLERİ SİLMEK İSTEDİĞİNİZE EMİN MİSİNİZ?")) {
-            await supabase.from('memories').delete().eq('user_id', sessionUserId);
-            await supabase.from('events').delete().eq('user_id', sessionUserId);
+            await supabase.from('memories').delete().eq('user_id', user.id);
+            await supabase.from('events').delete().eq('user_id', user.id);
             alert("Veriler sıfırlandı.");
             window.location.reload();
         }
