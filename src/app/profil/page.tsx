@@ -341,7 +341,7 @@ export default function ProfileDashboard() {
     const displayAvatar = previewImage || form.avatar_url || null;
 
     return (
-        <div className="flex flex-col gap-8 pb-32 text-slate-200 font-light px-2 sm:px-0">
+        <div className="flex flex-col gap-6 pb-32 text-slate-200 font-light px-2 sm:px-0">
             <Toast toast={toast} />
 
             {/* ── Glassmorphism Hero ── */}
@@ -455,14 +455,14 @@ export default function ProfileDashboard() {
                     </div>
                 </div>
 
-                <div className="glass-panel bg-white/5 rounded-[2.5rem] p-6 space-y-4">
+                <div className="glass-panel bg-white/5 rounded-[2rem] p-4 space-y-2">
                     {customDetails.length === 0 ? (
                         <div className="text-center py-6 border border-dashed border-white/10 rounded-2xl opacity-70">
                             <h4 className="text-sm font-medium text-slate-300 mb-1 tracking-wide">Henüz özel detay eklenmedi ✨</h4>
                             <p className="text-xs text-slate-500 font-light max-w-[200px] mx-auto">İlk buluşma mekanınız, birbirinize taktığınız isimler gibi detaylar ekleyin.</p>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-3">
                             {customDetails.map((detail) => (
                                 <div key={detail.id} className="flex items-center gap-3 w-full group">
                                     <div className="flex-1 grid grid-cols-2 gap-3">
@@ -490,7 +490,7 @@ export default function ProfileDashboard() {
                         </div>
                     )}
 
-                    <div className="pt-2 flex justify-center w-full">
+                    <div className="pt-1 flex justify-center w-full">
                         <Button
                             onClick={addCustomDetail}
                             className="bg-white/5 border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/10 text-gold rounded-full px-6 transition-all duration-500 font-light flex items-center gap-2 text-sm h-12"
@@ -502,7 +502,7 @@ export default function ProfileDashboard() {
             </section>
 
             {/* ── Floating Save Button ── */}
-            <div className="relative w-full mt-8 mb-24 max-w-md mx-auto z-20 pointer-events-none">
+            <div className="relative w-full mt-4 mb-24 max-w-md mx-auto z-20 pointer-events-none">
                 <Button
                     onClick={handleSave}
                     className="w-full h-16 rounded-full shadow-[0_10px_40px_rgba(244,63,94,0.15)] flex items-center justify-center gap-3 text-sm tracking-wide font-medium pointer-events-auto bg-slate-900 border border-rose-500/30 hover:border-rose-400/50 hover:bg-slate-950 text-slate-100 transition-all duration-500 transform hover:-translate-y-1 active:scale-95 hover:text-gold"

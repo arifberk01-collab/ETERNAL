@@ -215,7 +215,7 @@ export default function MemoriesPage() {
                         <textarea
                             name="description"
                             defaultValue={editingMemory?.description}
-                            className="w-full rounded-xl bg-gray-50 dark:bg-[#2C2C2E] border border-transparent focus:border-primary focus:ring-1 focus:ring-primary p-4 transition-all text-base outline-none resize-none min-h-[100px]"
+                            className="w-full bg-white/5 text-white border border-white/10 rounded-xl focus:ring-rose-500 focus:border-rose-500 p-4 transition-all text-base outline-none resize-none min-h-[100px]"
                             required
                         />
                     </div>
