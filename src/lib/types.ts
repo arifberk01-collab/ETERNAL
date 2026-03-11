@@ -7,6 +7,8 @@ export interface AppEvent {
     title: string;
     dateISO: string;
     iconType: string;
+    type?: 'meeting' | 'anniversary'; // NEW: Added in Phase 3
+    location?: string; // NEW: Added in Phase 3
     daysLeft?: number;
 }
 
@@ -15,7 +17,8 @@ export interface AppMemory {
     title: string;
     description: string;
     dateISO: string;
-    image: string; // Base64
+    image?: string; // Deprecated single image
+    images?: string[]; // NEW: Added in Phase 3 for multiple images
 }
 
 export interface AppProfilePreferences {

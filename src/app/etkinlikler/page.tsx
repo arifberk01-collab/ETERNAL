@@ -19,6 +19,10 @@ export default function EventsPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingEvent, setEditingEvent] = useState<AppEvent | null>(null);
 
+    // New Fields State
+    const [eventType, setEventType] = useState<'meeting' | 'anniversary'>('meeting');
+    const [locationInput, setLocationInput] = useState('');
+
     useEffect(() => {
         fetchEvents();
     }, []);
@@ -47,11 +51,15 @@ export default function EventsPage() {
 
     const handleOpenAdd = () => {
         setEditingEvent(null);
+        setEventType('meeting');
+        setLocationInput('');
         setIsModalOpen(true);
     };
 
     const handleOpenEdit = (event: AppEvent) => {
         setEditingEvent(event);
+        setEventType(event.type || 'meeting');
+        setLocationInput(event.location || '');
         setIsModalOpen(true);
     };
 
@@ -68,14 +76,18 @@ export default function EventsPage() {
         const title = formData.get('title') as string;
         const dateISO = formData.get('dateISO') as string;
 
+        // Extracting new fields from state
+        const typeSelected = eventType;
+        const locationSelected = eventType === 'meeting' ? locationInput.trim() : null;
+
         if (editingEvent) {
             const { error } = await supabase
                 .from('events')
-                .update({ title, dateISO })
+                .update({ title, dateISO, type: typeSelected, location: locationSelected })
                 .eq('id', editingEvent.id);
 
             if (!error) {
-                setEvents(events.map(e => e.id === editingEvent.id ? { ...e, title, dateISO } : e));
+                setEvents(events.map(e => e.id === editingEvent.id ? { ...e, title, dateISO, type: typeSelected, location: locationSelected || undefined } : e));
             }
         } else {
             if (!sessionUserId) {
@@ -85,7 +97,14 @@ export default function EventsPage() {
 
             const { data, error } = await supabase
                 .from('events')
-                .insert([{ title, dateISO, iconType: 'heart', user_id: sessionUserId }])
+                .insert([{
+                    title,
+                    dateISO,
+                    iconType: 'heart',
+                    type: typeSelected,
+                    location: locationSelected,
+                    user_id: sessionUserId
+                }])
                 .select();
 
             if (error) {
@@ -146,8 +165,32 @@ export default function EventsPage() {
                 <form onSubmit={handleSave} className="flex flex-col gap-4 mt-2">
                     <Input name="title" label="Etkinlik Adı" defaultValue={editingEvent?.title} required />
                     <Input name="dateISO" label="Tarih" type="date" defaultValue={editingEvent?.dateISO} required />
+
+                    <div className="flex flex-col gap-2">
+                        <label className="text-xs tracking-wider text-slate-400 pl-4 uppercase">Etkinlik Türü</label>
+                        <select
+                            value={eventType}
+                            onChange={(e) => setEventType(e.target.value as any)}
+                            className="h-14 rounded-2xl glass-panel text-white bg-white/5 border border-white/10 focus:border-rose-500/50 focus:ring-1 focus:ring-rose-500/30 transition-all duration-500 outline-none px-4 font-light text-sm cursor-pointer appearance-none"
+                        >
+                            <option value="meeting" className="bg-slate-900 text-white">Buluşma (Tek Seferlik)</option>
+                            <option value="anniversary" className="bg-slate-900 text-white">Yıl Dönümü (Tekrarlayan)</option>
+                        </select>
+                    </div>
+
+                    {eventType === 'meeting' && (
+                        <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                            <Input
+                                name="location"
+                                label="Konum (Örn: Kadıköy Moda)"
+                                value={locationInput}
+                                onChange={(e) => setLocationInput(e.target.value)}
+                            />
+                        </div>
+                    )}
+
                     <div className="pt-4">
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full h-14 bg-white/10 text-white border border-white/20 hover:bg-rose-500 hover:border-transparent transition-all duration-300">
                             {editingEvent ? "Güncelle" : "Ekle"}
                         </Button>
                     </div>

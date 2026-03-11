@@ -46,3 +46,19 @@ export function daysUntil(date: Date | string | null | undefined): number {
 
     return days; // negative = past, 0 = today, positive = future
 }
+
+export function daysUntilNextAnniversary(date: Date | string | null | undefined): number {
+    const originalDate = parseLocalDate(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const nextAnniversary = new Date(today.getFullYear(), originalDate.getMonth(), originalDate.getDate(), 0, 0, 0, 0);
+
+    // If the anniversary has already occurred this year, calculate for next year
+    if (nextAnniversary.getTime() < today.getTime()) {
+        nextAnniversary.setFullYear(today.getFullYear() + 1);
+    }
+
+    const diffTime = nextAnniversary.getTime() - today.getTime();
+    return Math.round(diffTime / (1000 * 60 * 60 * 24));
+}

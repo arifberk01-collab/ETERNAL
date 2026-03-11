@@ -23,15 +23,40 @@ export function MemoryCard({ memory, onEdit, onDelete }: MemoryCardProps) {
                     {memory.description}
                 </p>
 
-                {memory.image && (
-                    <div className="w-full h-48 sm:h-56 relative rounded-xl overflow-hidden bg-white/5 border border-white/10 mb-2 shadow-inner">
-                        <img
-                            src={memory.image}
-                            alt={memory.title}
-                            className="absolute inset-0 w-full h-full object-cover"
-                        />
-                    </div>
-                )}
+                {/* Support for legacy single image OR new multiple images array */}
+                {(() => {
+                    const imagesToDisplay = memory.images && memory.images.length > 0
+                        ? memory.images
+                        : (memory.image ? [memory.image] : []);
+
+                    if (imagesToDisplay.length === 0) return null;
+
+                    if (imagesToDisplay.length === 1) {
+                        return (
+                            <div className="w-full h-48 sm:h-56 relative rounded-xl overflow-hidden bg-white/5 border border-white/10 mb-2 shadow-inner">
+                                <img
+                                    src={imagesToDisplay[0]}
+                                    alt={memory.title}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                            </div>
+                        );
+                    }
+
+                    return (
+                        <div className="flex overflow-x-auto gap-3 pb-2 snap-x snap-mandatory hide-scrollbar">
+                            {imagesToDisplay.map((imgUrl, i) => (
+                                <div key={i} className="min-w-[85%] sm:min-w-[70%] h-48 sm:h-56 relative rounded-xl overflow-hidden bg-white/5 border border-white/10 shrink-0 snap-center shadow-inner">
+                                    <img
+                                        src={imgUrl}
+                                        alt={`${memory.title} ${i + 1}`}
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    );
+                })()}
             </div>
 
             <div className="flex border-t border-white/10 divide-x divide-white/10 bg-white/5 backdrop-blur-md">
