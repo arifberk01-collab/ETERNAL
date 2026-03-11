@@ -39,6 +39,7 @@ export default function MemoriesPage() {
             const { data, error } = await supabase
                 .from('memories')
                 .select('*')
+                .eq('user_id', session.user.id)
                 .order('dateISO', { ascending: false });
             if (error) console.error('Fetch error:', error.message);
             if (data) {
@@ -156,14 +157,15 @@ export default function MemoriesPage() {
                 setIsModalOpen(false);
             }
         } else {
-            if (!sessionUserId) {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
                 alert("Oturum bulunamadı, lütfen tekrar giriş yapın.");
                 return;
             }
 
             const { data, error } = await supabase
                 .from('memories')
-                .insert([{ title, dateISO, description, image: imageUrl, user_id: sessionUserId }])
+                .insert([{ title, dateISO, description, image: imageUrl, user_id: session.user.id }])
                 .select()
                 .single();
 

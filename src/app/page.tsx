@@ -108,7 +108,7 @@ export default function Home() {
 
         const [configRes, eventsRes] = await Promise.all([
           supabase.from('config').select('*').eq('id', session.user.id).maybeSingle(),
-          supabase.from('events').select('*')
+          supabase.from('events').select('*').eq('user_id', session.user.id)
         ]);
 
         if (configRes.data) setConfig(configRes.data);

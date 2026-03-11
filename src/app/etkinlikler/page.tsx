@@ -37,7 +37,7 @@ export default function EventsPage() {
             }
             setSessionUserId(session.user.id);
 
-            const { data } = await supabase.from('events').select('*');
+            const { data } = await supabase.from('events').select('*').eq('user_id', session.user.id);
             if (data) {
                 setEvents(data);
             } else {
@@ -84,7 +84,7 @@ export default function EventsPage() {
         if (editingEvent) {
             const { error } = await supabase
                 .from('events')
-                .update({ title, dateISO, type: typeSelected, location: locationSelected })
+                .update({ title, dateISO, type: typeSelected, location: locationSelected, user_id: sessionUserId })
                 .eq('id', editingEvent.id);
 
             if (!error) {
