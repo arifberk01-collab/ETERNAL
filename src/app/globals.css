@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 2, 6, 23;
+    /* slate-950 rgb */
+    --foreground: 248, 250, 252;
+    /* slate-50 rgb */
+  }
+
+  html {
+    background-color: #020617;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-100 min-h-screen;
+    background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #020617 80%);
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl;
+  }
+
+  .text-gold {
+    @apply text-rose-400 font-medium;
+  }
+
+  .bg-gold {
+    @apply bg-rose-500 text-white shadow-lg shadow-rose-500/30;
+  }
+}
