@@ -9,7 +9,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { MemoryCard } from "@/components/MemoryCard";
-import { Upload, X } from 'lucide-react';
+import { Upload, X, Image as ImageIcon } from 'lucide-react';
 
 export default function MemoriesPage() {
     const router = useRouter();
@@ -188,7 +188,11 @@ export default function MemoriesPage() {
     return (
         <div className="flex flex-col gap-6 relative pb-6">
             {sortedMemories.length === 0 && (
-                <div className="text-center text-gray-500 py-10 mt-10">Hiç anı yok. İlk anını ekle! 💙</div>
+                <div className="flex flex-col items-center justify-center py-20 px-6 text-center glass-panel rounded-[2rem] border-dashed border-white/20 mt-10">
+                    <ImageIcon size={48} className="text-slate-500 mb-4 opacity-40" />
+                    <h4 className="font-medium text-slate-200 mb-2 tracking-wide font-playfair uppercase italic">Henüz bir anı yok</h4>
+                    <p className="text-xs font-light text-slate-400 max-w-[250px] leading-relaxed">İlk anınızı ekleyerek hikayenizi oluşturmaya başlayın.</p>
+                </div>
             )}
 
             <div className="relative pl-[18px] sm:pl-6 before:absolute before:inset-y-0 before:left-[11px] sm:before:left-[11px] before:w-0.5 before:bg-gradient-to-b before:from-primary/50 before:via-primary/20 before:to-transparent flex flex-col gap-8 mt-2">

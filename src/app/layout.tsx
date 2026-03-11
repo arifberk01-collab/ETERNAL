@@ -21,7 +21,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Eternal ✨",
+  title: "Eternal",
   description: "Your shared moments, beautifully remembered.",
 };
 

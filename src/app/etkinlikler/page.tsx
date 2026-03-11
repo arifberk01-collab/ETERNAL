@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from "@/lib/supabase";
+import { Calendar, Plus } from 'lucide-react';
 import { AppEvent } from "@/lib/types";
 import { daysUntil } from "@/lib/utils";
 import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
@@ -137,12 +138,16 @@ export default function EventsPage() {
     return (
         <div className="flex flex-col gap-6">
             {sortedKeys.length === 0 && (
-                <div className="text-center text-gray-500 py-10 mt-10">Henüz bir etkinlik yok.</div>
+                <div className="flex flex-col items-center justify-center py-20 px-6 text-center glass-panel rounded-[2rem] border-dashed border-white/20 mt-10">
+                    <Calendar size={48} className="text-slate-500 mb-4 opacity-40" />
+                    <h4 className="font-medium text-slate-200 mb-2 tracking-wide font-playfair uppercase">Henüz bir etkinlik yok</h4>
+                    <p className="text-xs font-light text-slate-400 max-w-[250px] leading-relaxed">Önemli tarihleri buraya ekleyerek geri sayımı başlatabilirsiniz.</p>
+                </div>
             )}
 
             {sortedKeys.map(key => (
                 <section key={key}>
-                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 px-1">{key}</h3>
+                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 px-1 font-playfair">{key}</h3>
                     <div className="flex flex-col gap-3">
                         {groupedEvents[key].map((event: AppEvent) => {
                             const daysLeft = daysUntil(event.dateISO);

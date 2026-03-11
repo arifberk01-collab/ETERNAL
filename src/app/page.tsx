@@ -8,7 +8,7 @@ import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { AppConfig, AppEvent } from "@/lib/types";
-import { Calendar, ArrowRight, Image as ImageIcon } from "lucide-react";
+import { Calendar, ArrowRight, Image as ImageIcon, Heart, Sparkles, Plus } from "lucide-react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -141,7 +141,7 @@ export default function Home() {
           <div className="absolute top-0 left-0 w-full h-full bg-[url('/noise.png')] opacity-10 mix-blend-overlay pointer-events-none" />
           <div className="relative z-10 flex flex-col items-center text-center">
             <div className="p-4 bg-white/5 backdrop-blur-xl rounded-full mb-6 border border-white/10 shadow-inner group transition-all duration-500 ease-in-out hover:shadow-rose-500/20">
-              <span className="text-3xl filter drop-shadow-[0_0_8px_rgba(244,63,94,0.8)] group-hover:scale-110 transition-transform duration-500">💖</span>
+              <Heart size={32} className="text-rose-500 filter drop-shadow-[0_0_8px_rgba(244,63,94,0.8)] group-hover:scale-110 transition-transform duration-500" />
             </div>
 
             {config?.relationshipStartDate ? (
@@ -151,11 +151,11 @@ export default function Home() {
               </>
             ) : (
               <div className="py-6 flex flex-col items-center">
-                <span className="text-4xl mb-3 filter opacity-80">✨</span>
-                <h2 className="text-2xl font-light text-slate-100 mb-2">Başlangıç Tarihini Gir!</h2>
+                <Sparkles size={40} className="text-gold mb-3 opacity-80" />
+                <h2 className="text-2xl font-light text-slate-100 mb-2 font-playfair tracking-wide uppercase">Başlangıç Tarihini Gir!</h2>
                 <p className="text-slate-400 text-sm mb-6 font-light">Profil sayfasından tanışma gününüzü ayarlayın.</p>
                 <Button onClick={() => router.push('/profil')} className="bg-gold border-none hover:bg-rose-400 rounded-full px-6 font-medium text-white transition-all duration-500">
-                  Profili Düzenle ⚙️
+                  Profili Düzenle
                 </Button>
               </div>
             )}
@@ -166,7 +166,7 @@ export default function Home() {
       {/* ── Upcoming Events ── */}
       <section className="px-1">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="text-lg font-medium tracking-wide text-slate-100">Yaklaşan Günler 🗓️</h3>
+          <h3 className="text-lg font-medium tracking-wide text-slate-100 font-playfair uppercase">Yaklaşan Günler</h3>
           <Link href="/etkinlikler" className="text-xs text-gold font-medium flex items-center gap-1 hover:gap-2 transition-all duration-300 bg-white/5 px-3 py-1.5 rounded-full border border-white/5 hover:border-rose-500/30">
             Tümü <ArrowRight size={12} />
           </Link>
@@ -201,8 +201,11 @@ export default function Home() {
             ))
           ) : (
             <div className="flex flex-col items-center justify-center py-12 px-6 text-center glass-panel rounded-[2rem] border-dashed border-white/20">
-              <span className="text-4xl mb-4 opacity-50 filter drop-shadow-md">🗓️🍷</span>
-              <h4 className="font-medium text-slate-200 mb-2 tracking-wide">İlk etkinliğinizi planlayın!</h4>
+              <div className="flex gap-2 mb-4 opacity-50">
+                <Calendar size={32} className="text-slate-400" />
+                <Sparkles size={32} className="text-gold" />
+              </div>
+              <h4 className="font-medium text-slate-200 mb-2 tracking-wide font-playfair uppercase">İlk etkinliğinizi planlayın</h4>
               <p className="text-xs font-light text-slate-400 max-w-[250px] leading-relaxed">Yaklaşan bir etkinlik bulunmuyor. Yeni bir tarih ekleyerek geri sayımı başlatın.</p>
             </div>
           )}
@@ -211,7 +214,7 @@ export default function Home() {
 
       <FloatingActionButton onClick={() => setIsAddOpen(true)} />
 
-      <Modal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} title="Ne eklemek istersin? ✨">
+      <Modal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} title="Seçimini Yap">
         <div className="flex flex-col gap-3 p-2">
           <button
             onClick={() => { setIsAddOpen(false); router.push('/etkinlikler'); }}
@@ -221,7 +224,7 @@ export default function Home() {
               <Calendar size={22} className="font-light" />
             </div>
             <div>
-              <div className="font-medium tracking-wide text-slate-100">Yeni Etkinlik 🥂</div>
+              <div className="font-medium tracking-wide text-slate-100 font-playfair uppercase">Yeni Etkinlik</div>
               <div className="text-xs font-light text-slate-400 mt-0.5">Gelecek bir tarih için geri sayım</div>
             </div>
           </button>
@@ -234,7 +237,7 @@ export default function Home() {
               <ImageIcon size={22} className="font-light" />
             </div>
             <div>
-              <div className="font-medium tracking-wide text-slate-100">Fotoğraflı Anı 📸</div>
+              <div className="font-medium tracking-wide text-slate-100 font-playfair uppercase">Fotoğraflı Anı</div>
               <div className="text-xs font-light text-slate-400 mt-0.5">Birlikte geçirdiğiniz bir anı ölümsüzleştirin</div>
             </div>
           </button>

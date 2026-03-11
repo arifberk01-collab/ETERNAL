@@ -125,7 +125,7 @@ export default function PartnerPage() {
             }).eq('id', user.id);
 
             if (pError) throw pError;
-            showToast("Partner bilgileri kaydedildi 💖", 'success');
+            showToast("Partner bilgileri kaydedildi", 'success');
 
         } catch (error: any) {
             showToast(error.message || "Kaydedilirken hata oluştu.", 'error');
@@ -143,7 +143,7 @@ export default function PartnerPage() {
             <Toast toast={toast} />
 
             <div className="flex flex-col gap-2 pt-4">
-                <h1 className="text-3xl font-light tracking-wide text-white">Partner <span className="text-rose-400">✨</span></h1>
+                <h1 className="text-4xl font-light tracking-wide text-white font-playfair uppercase">Partner</h1>
                 <p className="text-sm font-light text-slate-400">Onunla ilgili her özel detay burada güvende.</p>
             </div>
 
@@ -159,7 +159,7 @@ export default function PartnerPage() {
 
                     {customDetails.length === 0 ? (
                         <div className="text-center py-6 border border-dashed border-white/10 rounded-2xl opacity-70">
-                            <h4 className="text-sm font-medium text-slate-300 mb-1 tracking-wide">Henüz detay eklenmedi ✨</h4>
+                            <h4 className="text-sm font-medium text-slate-300 mb-1 tracking-wide font-playfair uppercase italic">Henüz detay eklenmedi</h4>
                             <p className="text-xs text-slate-500 font-light max-w-[200px] mx-auto">En sevdiği kahve, yüzük ölçüsü veya sevdiği renkler...</p>
                         </div>
                     ) : (
@@ -168,7 +168,7 @@ export default function PartnerPage() {
                                 <div key={detail.id} className="flex items-center gap-3 w-full group/item">
                                     <div className="flex-1 grid grid-cols-2 gap-3">
                                         <FloatingInput
-                                            label="Başlık (Örn: Kahve ☕)"
+                                            label="Başlık (Örn: Kahve)"
                                             name={`key-${detail.id}`}
                                             value={detail.key}
                                             onChange={(e: any) => updateCustomDetail(detail.id, 'key', e.target.value)}
@@ -214,7 +214,7 @@ export default function PartnerPage() {
 
                     {giftIdeas.length === 0 ? (
                         <div className="text-center py-6 border border-dashed border-white/10 rounded-2xl opacity-70">
-                            <h4 className="text-sm font-medium text-slate-300 mb-1 tracking-wide">Henüz hediye fikri yok 🎁</h4>
+                            <h4 className="text-sm font-medium text-slate-300 mb-1 tracking-wide font-playfair uppercase italic">Henüz hediye fikri yok</h4>
                             <p className="text-xs text-slate-500 font-light max-w-[200px] mx-auto">İlerisi için kaydetmek istediğiniz hediye fikirlerini buraya listeleyebilirsiniz.</p>
                         </div>
                     ) : (
@@ -223,7 +223,7 @@ export default function PartnerPage() {
                                 <div key={gift.id} className="flex items-center gap-3 w-full group/item">
                                     <div className="flex-1 grid grid-cols-2 gap-3">
                                         <FloatingInput
-                                            label="Hediye (Örn: Kolye 💎)"
+                                            label="Hediye (Örn: Kolye)"
                                             name={`gkey-${gift.id}`}
                                             value={gift.key}
                                             onChange={(e: any) => updateGiftIdea(gift.id, 'key', e.target.value)}
@@ -265,7 +265,7 @@ export default function PartnerPage() {
                     disabled={saving}
                 >
                     <Save size={20} className={saving ? 'animate-spin text-gold' : 'text-gold'} />
-                    {saving ? "Değişiklikler Kaydediliyor ✨" : "Değişiklikleri Kaydet 💖"}
+                    {saving ? "Değişiklikler Kaydediliyor" : "Değişiklikleri Kaydet"}
                 </Button>
             </div>
         </div>

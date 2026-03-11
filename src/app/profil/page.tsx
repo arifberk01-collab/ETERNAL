@@ -310,12 +310,12 @@ export default function ProfileDashboard() {
                         </div>
                     </div>
 
-                    <h2 className="text-3xl font-medium tracking-wide text-slate-100 mb-3 filter drop-shadow-md">{form.name || "Kullanıcı ✨"}</h2>
+                    <h2 className="text-3xl font-medium tracking-wide text-slate-100 mb-3 filter drop-shadow-md font-playfair uppercase">{form.name || "Kullanıcı"}</h2>
 
                     {form.bio ? (
                         <p className="text-slate-300 text-sm max-w-[280px] leading-relaxed font-light">{form.bio}</p>
                     ) : (
-                        <p className="text-slate-500 text-xs tracking-wide uppercase max-w-[280px]">Biyografi henüz eklenmedi 📝</p>
+                        <p className="text-slate-500 text-xs tracking-wide uppercase max-w-[280px]">Biyografi henüz eklenmedi</p>
                     )}
 
                     {anniversaryDate && (
@@ -346,7 +346,7 @@ export default function ProfileDashboard() {
                             className="peer w-full h-14 rounded-2xl glass-panel text-slate-200 focus:border-red-400/50 focus:ring-1 focus:ring-red-400/30 focus:bg-white/10 transition-all outline-none pt-4 pb-1 pl-11 pr-4 font-light text-sm"
                         />
                         <label className="absolute text-[10px] tracking-wider text-slate-400 uppercase top-[14px] left-11">
-                            Tanışma Günü 💖
+                            Tanışma Günü
                         </label>
                     </div>
 
@@ -375,14 +375,14 @@ export default function ProfileDashboard() {
                 <div className="flex flex-col gap-3">
                     <Switch
                         label="Etkinlikleri Göster"
-                        description="Ana sayfada yaklaşan buluşma ve etkinlikleri sergiler. 🥂"
+                        description="Ana sayfada yaklaşan buluşma ve etkinlikleri sergiler."
                         icon={<Star size={20} />}
                         checked={preferences.showEvents ?? true}
                         onChange={() => setPreferences(prev => ({ ...prev, showEvents: !prev.showEvents }))}
                     />
                     <Switch
                         label="Anıları Göster"
-                        description="Fotoğraf galerisi ve özel anılar sekmesini görünür yapar. 📸"
+                        description="Fotoğraf galerisi ve özel anılar sekmesini görünür yapar."
                         icon={<Camera size={20} />}
                         checked={preferences.showMemories ?? true}
                         onChange={() => setPreferences(prev => ({ ...prev, showMemories: !prev.showMemories }))}
@@ -398,7 +398,7 @@ export default function ProfileDashboard() {
                     disabled={saving}
                 >
                     <Save size={20} className={saving ? 'animate-spin text-gold' : 'text-gold'} />
-                    {saving ? "Değişiklikler Kaydediliyor ✨" : "Profili Güncelle 💖"}
+                    {saving ? "Değişiklikler Kaydediliyor" : "Profili Güncelle"}
                 </Button>
 
                 <Button
